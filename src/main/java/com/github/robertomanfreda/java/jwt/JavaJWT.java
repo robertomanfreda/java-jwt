@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.*;
 import java.security.cert.Certificate;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -32,9 +31,10 @@ public class JavaJWT {
         KeyPair keyPair = loadKeyPair();
 
         if (null != keyPair) {
+            PrivateKey privateKey = keyPair.getPrivate();
             RSAPublicKey rsaPublicKey = (RSAPublicKey) keyPair.getPublic();
-            generator = new JWTSEGenerator(secretKey, new RSAEncrypter(rsaPublicKey));
-            verifier = new JWTSEVerifier(secretKey, (RSAPrivateKey) keyPair.getPrivate());
+            generator = new JWTSEGenerator(privateKey, new RSAEncrypter(rsaPublicKey));
+            verifier = new JWTSEVerifier(rsaPublicKey, privateKey);
         } else {
             throw new Exception("Trouble loading keystore");
         }
@@ -46,7 +46,7 @@ public class JavaJWT {
     }
 
     public Payload verify(String encryptedSignedJWT) throws Exception {
-        return verifier.verify(encryptedSignedJWT);
+        return verifier.verifyAndDecrypt(encryptedSignedJWT);
     }
 
     private KeyPair loadKeyPair() throws Exception {

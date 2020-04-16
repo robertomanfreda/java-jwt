@@ -4,21 +4,22 @@ import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jwt.SignedJWT;
 
-import java.security.interfaces.RSAPrivateKey;
+import java.security.PrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 class JWTSEVerifier {
 
-    private final String secretKey;
+    private final RSAPublicKey rsaPublicKey;
     private final JWTEDecryptor jwTeDecryptor;
     private final JWTSVerifier jwTsVerifier;
 
-    JWTSEVerifier(String secretKey, RSAPrivateKey rsaPrivateKey) {
-        this.secretKey = secretKey;
-        jwTeDecryptor = new JWTEDecryptor(rsaPrivateKey);
+    JWTSEVerifier(RSAPublicKey rsaPublicKey, PrivateKey privateKey) {
+        this.rsaPublicKey = rsaPublicKey;
+        jwTeDecryptor = new JWTEDecryptor(privateKey);
         jwTsVerifier = new JWTSVerifier();
     }
 
-    Payload verify(String encryptedSignedJWT) throws Exception {
+    Payload verifyAndDecrypt(String encryptedSignedJWT) throws Exception {
         boolean verified;
         SignedJWT signedJWT;
 
@@ -30,7 +31,7 @@ class JWTSEVerifier {
 
             String serialized = signedJWT.serialize();
 
-            verified = jwTsVerifier.verify(serialized, secretKey);
+            verified = jwTsVerifier.verify(serialized, rsaPublicKey);
         } catch (Exception e) {
             throw new InvalidTokenException("Error - " + e.getMessage());
         }
