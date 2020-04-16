@@ -16,7 +16,7 @@ Basically providing 2 methods that you can access instantiating a new `JavaJWT` 
 <dependency>
     <groupId>com.github.robertomanfreda</groupId>
     <artifactId>java-jwt</artifactId>
-    <version>1.0.3-RELEASE</version>
+    <version>1.1.0-RELEASE</version>
 </dependency>
 ```  
 
