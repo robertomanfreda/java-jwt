@@ -6,19 +6,13 @@
 
     <groupId>com.github.robertomanfreda</groupId>
     <artifactId>java-jwt</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
-
+    <version>1.0.3-RELEASE</version>
     <packaging>jar</packaging>
 
+    <name>${project.groupId}: ${project.artifactId}</name>
     <description>Library for Signed-Encrypted JSON Web Tokens generation</description>
     <url>https://github.com/robertomanfreda/java-jwt</url>
-    <developers>
-        <developer>
-            <name>Roberto Manfreda</name>
-            <email>robertomanfreda1994@gmail.com</email>
-            <url>https://robertomanfreda.github.io</url>
-        </developer>
-    </developers>
+
     <licenses>
         <license>
             <name>GPL-3.0 License</name>
@@ -26,12 +20,20 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <scm>
-        <url>https://github.com/robertomanfreda/java-jwt</url>
-        <connection>scm:git:git@github.com/robertomanfreda/java-jwt.git</connection>
-        <developerConnection>scm:git:git@github.com/robertomanfreda/java-jwt.git</developerConnection>
-    </scm>
 
+    <developers>
+        <developer>
+            <name>Roberto Manfreda</name>
+            <email>robertomanfreda1994@gmail.com</email>
+            <url>https://robertomanfreda.github.io</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:robertomanfreda/java-jwt.git</connection>
+        <developerConnection>scm:git:git@github.com:robertomanfreda/java-jwt.git</developerConnection>
+        <url>git@github.com:robertomanfreda/java-jwt.git</url>
+    </scm>
 
     <properties>
         <java.version>11</java.version>
@@ -58,6 +60,7 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
+
     </dependencies>
 
 

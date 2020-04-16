@@ -20,17 +20,15 @@ import java.util.zip.ZipInputStream;
 public class JavaJWT {
 
     @Getter
-    private final String secretKey;
-
-    @Getter
     private final String downloadUrl;
-
     private final JWTSEGenerator generator;
     private final JWTSEVerifier verifier;
 
-    public JavaJWT(@NonNull String secretKey, @NonNull String keystoreUrl) throws Exception {
-        this.secretKey = secretKey;
+    private String secretKey;
+
+    public JavaJWT(@NonNull String keystoreUrl) throws Exception {
         this.downloadUrl = keystoreUrl;
+
         KeyPair keyPair = loadKeyPair();
 
         if (null != keyPair) {
@@ -69,6 +67,9 @@ public class JavaJWT {
                 case "alias.txt":
                     alias = new String(zipIs.readAllBytes());
                     break;
+                case "secretKey.txt":
+                    secretKey = new String(zipIs.readAllBytes());
+                    break;
                 case "password.txt":
                     password = new String(zipIs.readAllBytes());
                     break;
@@ -83,7 +84,7 @@ public class JavaJWT {
             zipEntry = zipIs.getNextEntry();
         }
 
-        if (null != alias && null != password && null != kis) {
+        if (null != alias && null != secretKey && null != password && null != kis) {
             KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(kis, password.toCharArray());
 
