@@ -1,4 +1,4 @@
-package com.robertoman.java.jwt;
+package com.github.robertomanfreda.java.jwt;
 
 public class InvalidTokenException extends Exception {
     public InvalidTokenException(String errorMessage) {
