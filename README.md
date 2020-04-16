@@ -1,2 +1,4 @@
-# jwt
-Library for JSON Web Tokens generation
+# java-jwt
+A fast library for JSON Web Tokens generation
+
+#

@@ -10,6 +10,29 @@
 
     <packaging>jar</packaging>
 
+    <description>Library for Signed-Encrypted JSON Web Tokens generation</description>
+    <url>https://github.com/robertomanfreda/java-jwt</url>
+    <developers>
+        <developer>
+            <name>Roberto Manfreda</name>
+            <email>robertomanfreda1994@gmail.com</email>
+            <url>https://robertomanfreda.github.io</url>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>GPL-3.0 License</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/robertomanfreda/java-jwt</url>
+        <connection>scm:git:git@github.com/robertomanfreda/java-jwt.git</connection>
+        <developerConnection>scm:git:git@github.com/robertomanfreda/java-jwt.git</developerConnection>
+    </scm>
+
+
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -54,4 +77,60 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <distributionManagement>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.1.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
