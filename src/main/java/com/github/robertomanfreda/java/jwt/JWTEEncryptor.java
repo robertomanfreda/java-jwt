@@ -1,4 +1,4 @@
-package com.robertoman.java.jwt;
+package com.github.robertomanfreda.java.jwt;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.RSAEncrypter;
