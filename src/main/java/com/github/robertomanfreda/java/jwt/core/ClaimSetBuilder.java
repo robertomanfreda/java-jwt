@@ -1,4 +1,4 @@
-package com.github.robertomanfreda.java.jwt;
+package com.github.robertomanfreda.java.jwt.core;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 
@@ -8,9 +8,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-class SigningUtils {
+public class ClaimSetBuilder {
 
-    static JWTClaimsSet generateClaimsSet(String audience, Map<String, Object> claims, long ttlSeconds, String issuer) {
+    private ClaimSetBuilder() {
+    }
+
+    static JWTClaimsSet build(String audience, Map<String, Object> claims, long ttlSeconds, String issuer) {
         long now = System.currentTimeMillis();
         Date issuedAt = new Date(now);
         Date expiration = new Date(now + TimeUnit.SECONDS.toMillis(ttlSeconds));
