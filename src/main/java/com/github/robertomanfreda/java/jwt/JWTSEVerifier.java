@@ -6,33 +6,37 @@ import com.nimbusds.jose.crypto.RSADecrypter;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
 
-class JWTSEVerifier2 implements IJWTSEVerifier2 {
+class JWTSEVerifier implements IJWTSEVerifier {
 
     private final JWTEDecrypter jwTeDecrypter;
     private final JWTSVerifier jwTsVerifier;
 
-    JWTSEVerifier2(RSASSAVerifier rsassaVerifier, RSADecrypter rsaDecrypter) {
+    JWTSEVerifier(RSASSAVerifier rsassaVerifier, RSADecrypter rsaDecrypter) {
         jwTeDecrypter = new JWTEDecrypter(rsaDecrypter);
         jwTsVerifier = new JWTSVerifier(rsassaVerifier);
     }
 
-    SignedJWT decryptToJWTS(String encryptedSignedJWT) throws Exception {
+    @Override
+    public SignedJWT decryptToJWTS(String encryptedSignedJWT) throws Exception {
         JWEObject jweObjectEncrypted = JWEObject.parse(encryptedSignedJWT);
         JWEObject jweObjectDecrypted = jwTeDecrypter.decrypt(jweObjectEncrypted.serialize());
         return jweObjectDecrypted.getPayload().toSignedJWT();
     }
 
-    boolean verifyJWTs(String encryptedSignedJWT) throws Exception {
+    @Override
+    public boolean verifyJWTs(String encryptedSignedJWT) throws Exception {
         SignedJWT signedJWT = decryptToJWTS(encryptedSignedJWT);
         String serialized = signedJWT.serialize();
         return jwTsVerifier.verify(serialized);
     }
 
-    Payload decrypt(SignedJWT signedJWT) {
+    @Override
+    public Payload decrypt(SignedJWT signedJWT) {
         return signedJWT.getPayload();
     }
 
-    Payload verifyAndDecrypt(String encryptedSignedJWT) throws Exception {
+    @Override
+    public Payload verifyAndDecrypt(String encryptedSignedJWT) throws Exception {
         SignedJWT signedJWT = decryptToJWTS(encryptedSignedJWT);
         boolean verified = verifyJWTs(encryptedSignedJWT);
 
