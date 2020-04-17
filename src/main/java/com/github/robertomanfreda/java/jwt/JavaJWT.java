@@ -155,7 +155,7 @@ public class JavaJWT implements IJWTSEGenerator, IJWTSEVerifier {
                         keystoreIS.set(new ByteArrayInputStream(zipIs.readAllBytes()));
                         break;
                     default:
-                        System.out.println("This file [" + zipEntry.getName() + "] is useless, just delete it. " +
+                        log.warn("This file [" + zipEntry.getName() + "] is useless, just delete it. " +
                                 "Needed files are [alias.txt, password.txt, keyStore.p12]."
                         );
                 }
