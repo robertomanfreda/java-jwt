@@ -1,22 +1,20 @@
 package com.github.robertomanfreda.java.jwt;
 
 import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
 
-@NoArgsConstructor
+@RequiredArgsConstructor
 class JWTSVerifier {
 
-    boolean verify(String jwt, RSAPublicKey rsaPublicKey) throws ParseException, JOSEException {
-        SignedJWT signedJWT = SignedJWT.parse(jwt);
-        JWSVerifier jwsVerifier = new RSASSAVerifier(rsaPublicKey);
+    private final RSASSAVerifier rsassaVerifier;
 
-        boolean verified = signedJWT.verify(jwsVerifier);
+    boolean verify(String jwt) throws ParseException, JOSEException {
+        SignedJWT signedJWT = SignedJWT.parse(jwt);
+        boolean verified = signedJWT.verify(rsassaVerifier);
 
         if (verified) {
             System.out.println("Signature verified");

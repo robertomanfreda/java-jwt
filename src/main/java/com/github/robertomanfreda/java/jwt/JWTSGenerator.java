@@ -8,19 +8,19 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 
-import java.security.PrivateKey;
 import java.util.Map;
 
 @RequiredArgsConstructor
 class JWTSGenerator {
 
-    private final PrivateKey privateKey;
+    private final RSASSASigner rsassaSigner;
 
     SignedJWT generate(String issuer, String audience, Map<String, Object> claims, long ttlSeconds) throws Exception {
         JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS512).type(JOSEObjectType.JWT).build();
         JWTClaimsSet jwtClaimsSet = SigningUtils.generateClaimsSet(audience, claims, ttlSeconds, issuer);
+
         SignedJWT signedJWT = new SignedJWT(jwsHeader, jwtClaimsSet);
-        signedJWT.sign(new RSASSASigner(privateKey));
+        signedJWT.sign(rsassaSigner);
 
         return signedJWT;
     }

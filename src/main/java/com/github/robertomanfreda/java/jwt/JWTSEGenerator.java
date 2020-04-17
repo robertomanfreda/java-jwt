@@ -1,28 +1,29 @@
 package com.github.robertomanfreda.java.jwt;
 
 import com.nimbusds.jose.crypto.RSAEncrypter;
+import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jwt.SignedJWT;
 
-import java.security.PrivateKey;
 import java.util.Map;
 
-class JWTSEGenerator {
+class JWTSEGenerator implements IJWTSEGenerator {
 
     private final JWTSGenerator jwtsGenerator;
-    private final JWTEEncryptor jwTeEncryptor;
+    private final JWTEEncrypter jwTeEncrypter;
 
-    JWTSEGenerator(PrivateKey privateKey, RSAEncrypter rsaEncrypter) {
-        jwtsGenerator = new JWTSGenerator(privateKey);
-        jwTeEncryptor = new JWTEEncryptor(rsaEncrypter);
+    JWTSEGenerator(RSASSASigner rsassaSigner, RSAEncrypter rsaEncrypter) {
+        jwtsGenerator = new JWTSGenerator(rsassaSigner);
+        jwTeEncrypter = new JWTEEncrypter(rsaEncrypter);
     }
 
-    String generate(String issuer, String audience, Map<String, Object> claims, long ttlSeconds)
+    @Override
+    public String generate(String issuer, String audience, Map<String, Object> claims, long ttlSeconds)
             throws Exception {
         SignedJWT signedJWT = jwtsGenerator.generate(
                 issuer, audience, claims, ttlSeconds
         );
 
-        return jwTeEncryptor.encryptSigned(signedJWT);
+        return jwTeEncrypter.encryptSigned(signedJWT);
     }
 
 }
