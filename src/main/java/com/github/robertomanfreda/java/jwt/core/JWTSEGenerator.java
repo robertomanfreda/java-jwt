@@ -1,5 +1,6 @@
-package com.github.robertomanfreda.java.jwt;
+package com.github.robertomanfreda.java.jwt.core;
 
+import com.github.robertomanfreda.java.jwt.core.interfaces.IJWTSEGenerator;
 import com.nimbusds.jose.crypto.RSAEncrypter;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jwt.SignedJWT;

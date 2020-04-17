@@ -1,12 +1,14 @@
-package com.github.robertomanfreda.java.jwt;
+package com.github.robertomanfreda.java.jwt.core;
 
+import com.github.robertomanfreda.java.jwt.core.interfaces.IJWTSEVerifier;
+import com.github.robertomanfreda.java.jwt.exceptions.InvalidTokenException;
 import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.RSADecrypter;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
 
-class JWTSEVerifier implements IJWTSEVerifier {
+public class JWTSEVerifier implements IJWTSEVerifier {
 
     private final JWTEDecrypter jwTeDecrypter;
     private final JWTSVerifier jwTsVerifier;

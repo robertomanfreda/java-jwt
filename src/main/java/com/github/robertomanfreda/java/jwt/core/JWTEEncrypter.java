@@ -1,11 +1,12 @@
-package com.github.robertomanfreda.java.jwt;
+package com.github.robertomanfreda.java.jwt.core;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.RSAEncrypter;
 import com.nimbusds.jwt.SignedJWT;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class JWTEEncrypter {
 
     private final RSAEncrypter rsaEncrypter;
