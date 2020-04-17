@@ -6,7 +6,7 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class JWTEEncryptor {
+class JWTEEncrypter {
 
     private final RSAEncrypter rsaEncrypter;
 
