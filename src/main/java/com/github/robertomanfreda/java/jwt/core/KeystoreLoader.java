@@ -1,13 +1,6 @@
-package com.github.robertomanfreda.java.jwt;
+package com.github.robertomanfreda.java.jwt.core;
 
-import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.crypto.RSADecrypter;
-import com.nimbusds.jose.crypto.RSAEncrypter;
-import com.nimbusds.jose.crypto.RSASSASigner;
-import com.nimbusds.jose.crypto.RSASSAVerifier;
-import com.nimbusds.jwt.SignedJWT;
-import lombok.Getter;
-import lombok.NonNull;
+import com.github.robertomanfreda.java.jwt.exceptions.UnloadableKeystoreException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
@@ -19,80 +12,17 @@ import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @Slf4j
-public class JavaJWT implements IJWTSEGenerator, IJWTSEVerifier {
+public class KeystoreLoader {
 
-    @Getter
-    private URL downloadUrl;
-    private String downloadFileName;
-
-    @Getter
-    private String resourceName;
-
-    private JWTSEGenerator generator;
-    private JWTSEVerifier verifier;
-
-    public JavaJWT(@NonNull URL downloadUrl) throws UnloadableKeystoreException {
-        this.downloadUrl = downloadUrl;
-        this.downloadFileName = downloadUrl.getFile().replace("/", "");
-        log.debug("Trying to load [" + downloadFileName + "] from url [" + downloadUrl + "].");
-        init(loadFromUrl());
+    private KeystoreLoader() {
     }
 
-    public JavaJWT(@NonNull String resourceName) throws UnloadableKeystoreException {
-        this.resourceName = resourceName;
-        log.debug("Trying to load [" + resourceName + "] from resources folder");
-        init(loadFromResource());
-    }
-
-    // Generator wrapper methods
-    @Override
-    public String generate(String issuer, String audience, Map<String, Object> claims, long ttlSeconds) throws Exception {
-        return generator.generate(issuer, audience, claims, ttlSeconds);
-    }
-
-    // Verifier wrapper methods
-    @Override
-    public SignedJWT decryptToJWTS(String encryptedSignedJWT) throws Exception {
-        return verifier.decryptToJWTS(encryptedSignedJWT);
-    }
-
-    @Override
-    public boolean verifyJWTs(String encryptedSignedJWT) throws Exception {
-        return verifier.verifyJWTs(encryptedSignedJWT);
-    }
-
-    @Override
-    public Payload decrypt(SignedJWT signedJWT) {
-        return verifier.decrypt(signedJWT);
-    }
-
-    @Override
-    public Payload verifyAndDecrypt(String encryptedSignedJWT) throws Exception {
-        return verifier.verifyAndDecrypt(encryptedSignedJWT);
-    }
-
-    private void init(KeyPair keyPair) {
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        RSAPublicKey rsaPublicKey = (RSAPublicKey) keyPair.getPublic();
-
-        RSASSASigner rsassaSigner = new RSASSASigner(privateKey);
-        RSAEncrypter rsaEncrypter = new RSAEncrypter(rsaPublicKey);
-        generator = new JWTSEGenerator(rsassaSigner, rsaEncrypter);
-
-        RSASSAVerifier rsassaVerifier = new RSASSAVerifier(rsaPublicKey);
-        RSADecrypter rsaDecrypter = new RSADecrypter(privateKey);
-        verifier = new JWTSEVerifier(rsassaVerifier, rsaDecrypter);
-    }
-
-    private KeyPair loadFromUrl() throws UnloadableKeystoreException {
+    static KeyPair loadFromUrl(URL downloadUrl, String downloadFileName) throws UnloadableKeystoreException {
         AtomicReference<String> alias = new AtomicReference<>();
         AtomicReference<String> password = new AtomicReference<>();
         AtomicReference<InputStream> keystoreIS = new AtomicReference<>();
@@ -114,7 +44,7 @@ public class JavaJWT implements IJWTSEGenerator, IJWTSEVerifier {
         }
     }
 
-    private KeyPair loadFromResource() throws UnloadableKeystoreException {
+    static KeyPair loadFromResource(String resourceName, String downloadFileName) throws UnloadableKeystoreException {
         AtomicReference<String> alias = new AtomicReference<>();
         AtomicReference<String> password = new AtomicReference<>();
         AtomicReference<InputStream> keystoreIS = new AtomicReference<>();
@@ -135,8 +65,8 @@ public class JavaJWT implements IJWTSEGenerator, IJWTSEVerifier {
         }
     }
 
-    private KeyPair getKeyPair(AtomicReference<String> alias, AtomicReference<String> password,
-                               AtomicReference<InputStream> keystoreIS, InputStream inputStream)
+    static KeyPair getKeyPair(AtomicReference<String> alias, AtomicReference<String> password,
+                              AtomicReference<InputStream> keystoreIS, InputStream inputStream)
             throws UnloadableKeystoreException {
         try {
             ZipInputStream zipIs = new ZipInputStream(inputStream);

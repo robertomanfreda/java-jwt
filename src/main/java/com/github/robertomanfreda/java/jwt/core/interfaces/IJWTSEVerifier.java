@@ -1,9 +1,9 @@
-package com.github.robertomanfreda.java.jwt;
+package com.github.robertomanfreda.java.jwt.core.interfaces;
 
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jwt.SignedJWT;
 
-interface IJWTSEVerifier {
+public interface IJWTSEVerifier {
 
     SignedJWT decryptToJWTS(String encryptedSignedJWT) throws Exception;
 
