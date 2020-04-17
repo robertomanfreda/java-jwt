@@ -3,6 +3,8 @@ A safe and fast library for JWTSE (Json Web Token Signed Encrypted) generation
 
 ---
 
+WARNING, WORK IN PROGRESS. MANY CHANGES ARE COMING!  
+
 Java-jwt is build on top of the com.nimbusds:nimbus-jose-jwt library.    
 
 Basically providing 2 methods that you can access instantiating a new `JavaJWT` object:
