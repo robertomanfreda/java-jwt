@@ -67,7 +67,7 @@ public class KeystoreLoader {
         }
     }
 
-    static KeyPair loadFromPath(File zipFile, String resourceName) throws UnloadableKeystoreException {
+    static KeyPair loadFromFileSystem(File zipFile, String resourceName) throws UnloadableKeystoreException {
         AtomicReference<String> alias = new AtomicReference<>();
         AtomicReference<String> password = new AtomicReference<>();
         AtomicReference<InputStream> keystoreIS = new AtomicReference<>();
