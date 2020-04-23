@@ -13,7 +13,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -29,6 +31,9 @@ public class JavaJWT implements IJWTSEGenerator, IJWTSEVerifier {
     @Getter
     private String resourceName;
 
+    @Getter
+    private Path resourcePath;
+
     private JWTSEGenerator generator;
     private JWTSEVerifier verifier;
 
@@ -43,6 +48,13 @@ public class JavaJWT implements IJWTSEGenerator, IJWTSEVerifier {
         this.resourceName = resourceName;
         log.debug("Trying to load [" + resourceName + "] from resources folder");
         init(KeystoreLoader.loadFromResource(resourceName, downloadFileName));
+    }
+
+    public JavaJWT(@NonNull Path resourcePath) throws UnloadableKeystoreException {
+        this.resourcePath = resourcePath;
+        File zipFile = resourcePath.toFile();
+        log.debug("Trying to load [" + zipFile.getName() + "] from FileSystem");
+        init(KeystoreLoader.loadFromPath(zipFile, downloadFileName));
     }
 
     // Generator wrapper methods

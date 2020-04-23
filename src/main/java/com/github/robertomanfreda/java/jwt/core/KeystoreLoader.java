@@ -4,6 +4,8 @@ import com.github.robertomanfreda.java.jwt.exceptions.UnloadableKeystoreExceptio
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -57,6 +59,22 @@ public class KeystoreLoader {
 
             log.debug("Successfully loaded [" + downloadFileName + "] from resources folder");
 
+            return keyPair;
+        } catch (Exception e) {
+            throw new UnloadableKeystoreException("Unable to load [" + resourceName + "] from resources folder\n" +
+                    e.getMessage()
+            );
+        }
+    }
+
+    static KeyPair loadFromPath(File zipFile, String resourceName) throws UnloadableKeystoreException {
+        AtomicReference<String> alias = new AtomicReference<>();
+        AtomicReference<String> password = new AtomicReference<>();
+        AtomicReference<InputStream> keystoreIS = new AtomicReference<>();
+
+        try {
+            KeyPair keyPair = getKeyPair(alias, password, keystoreIS, new FileInputStream(zipFile));
+            log.debug("Successfully loaded [{}] from FileSystem using path {}", resourceName, zipFile.getName());
             return keyPair;
         } catch (Exception e) {
             throw new UnloadableKeystoreException("Unable to load [" + resourceName + "] from resources folder\n" +
